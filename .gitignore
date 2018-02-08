@@ -1,0 +1,11 @@
+#files of gch
+*.gch
+
+#intermediate files
+*.o
+
+#tags
+tags
+
+#.s
+*.s
