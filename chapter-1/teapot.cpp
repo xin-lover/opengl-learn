@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 
 void init()
 {
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glMatrixMode(GL_PROJECTION);
 	glOrtho(-5, 5, -5, 5, 5, 15);
 	glMatrixMode(GL_MODELVIEW);

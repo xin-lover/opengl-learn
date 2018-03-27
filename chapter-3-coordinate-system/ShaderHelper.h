@@ -8,6 +8,7 @@
 #include <string.h>
 
 #define BUFFER_SIZE 64
+#define BUFFER_OFFSET(a) ((GLvoid*)a)
 
 int readShader(const char* file,char** content)
 {
@@ -56,10 +57,11 @@ GLuint LoadShaders(ShaderInfo shaders[])
 		sArrays[j] = glCreateShader(shaders[j].type);
 		if(sArrays[j]== 0)
 		{
-			printf("create shader fail.\n");
+			printf("create shader %d fail.\n",shaders[j].type);
 		}
 
 		char* filebuf = NULL;
+		printf("file:%s\n",shaders[j].file);
 		if(readShader(shaders[j].file,&filebuf) != 0)
 		{
 			continue;
