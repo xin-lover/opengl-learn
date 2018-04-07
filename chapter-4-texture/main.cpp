@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include "ShaderHelper.h"
-#include "threemath.h"
+#include "../public/ShaderHelper.h"
+#include "../public/threemath.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "../public/stb_image.h"
 
 GLuint cubeVAO;
 GLuint cubeBuf;
@@ -51,11 +51,11 @@ bool LoadImage(GLuint tex,const char *path)
 	}
 	printf("width:%d height:%d channel:%d\n",tex_width,tex_height, nChannels);
 
-	glTexStorage2D(GL_TEXTURE_2D,2,GL_RGB8,tex_width,tex_height);
+	glTexStorage2D(GL_TEXTURE_2D,1,GL_RGB8,tex_width,tex_height);
 	
-	GLenum err = glGetError();
+	/*GLenum err = glGetError();
 	const GLubyte* content = gluErrorString(err);
-	printf("glTexSubImage2d error:%s\n",content);
+	printf("error:%s\n",content);*/
 	glTexSubImage2D(GL_TEXTURE_2D,0,
 			0,0,
 			tex_width,tex_height,
@@ -83,7 +83,7 @@ void InitTex()
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
-	LoadImage(tex,"./timg.jpeg");
+	LoadImage(tex,"./left.jpg");//timg.jpeg");
 
 }
 
