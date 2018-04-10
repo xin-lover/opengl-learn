@@ -435,18 +435,23 @@ class Matrix4x4
 		{
 			Float c = cos(RADIAN(theta));
 			Float s = sin(RADIAN(theta));
+			Float a = 1.0f - c;
+			Float ax = a * axis.x;
+			Float ay = a * axis.y;
+			Float az = a * axis.z;
+
 			Matrix4x4 m;
-			m.m_data[0] = axis.x * axis.x * (1 - c)  + c;
-			m.m_data[1] = axis.x * axis.y * (1 - c) + axis.z * s;
-			m.m_data[2] = axis.x * axis.z * (1 - c) - axis.y * s;
+			m.m_data[0] = ax * axis.x + c;
+			m.m_data[1] = ax * axis.y + axis.z * s;
+			m.m_data[2] = ax * axis.z - axis.y * s;
 			m.m_data[3] = 0;
-			m.m_data[4] = axis.x * axis.y * (1 - c) - axis.z * s;
-			m.m_data[5] = axis.y * axis.y * (1 - c) + c;
-			m.m_data[6] = axis.y * axis.z * (1 - c) + axis.x * s;
+			m.m_data[4] = ay * axis.x  - axis.z * s;
+			m.m_data[5] = ay * axis.y  + c;
+			m.m_data[6] = ay * axis.z  + axis.x * s;
 			m.m_data[7] = 0;
-			m.m_data[8] = axis.x * axis.z * (1 - c) + axis.y * s;
-			m.m_data[9] = axis.y * axis.z * (1 - c) -axis.x * s;
-			m.m_data[10] = axis.z * axis.z * (1- c) + c;
+			m.m_data[8] = az * axis.x + axis.y * s;
+			m.m_data[9] = az * axis.y - axis.x * s;
+			m.m_data[10] = az * axis.z + c;
 			m.m_data[11] = 0;
 
 			m.m_data[12] = 0;
