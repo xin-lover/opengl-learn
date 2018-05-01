@@ -29,7 +29,6 @@ void main()
 		quadraticAttenuation * lightDis * lightDis);
 
 	vec3 viewDir = normalize(viewPos - fragPos);
-	//vec3 halfVec = normalize(lightDirection + viewDir);
 	vec3 reflectDir = reflect(-lightDirection,norm);
 
 	float diffuse = max(0.0,dot(norm,lightDirection));

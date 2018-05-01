@@ -2,6 +2,7 @@
 #define __THREEMATH_H__
 
 #include <math.h>
+#include <string.h>
 
 #define Float float
 #define Int int
@@ -14,20 +15,34 @@ const Float k1OverPi = 1 / kPi;
 
 #define RADIAN(x) (x * kPi / 180)
 
-Float SafeAcos(Float x)
+Float SafeAcos(Float x);
+
+/**************************Vector2*********************/
+class Vector2
 {
-	if(x <= -1.0f)
-	{
-		return kPi;
-	}
+	public:
+		Float x;
+		Float y;
+		
+		Vector2():
+			x(0),
+			y(0)
+		{
 
-	if(x >=1.0f)
-	{
-		return 0.0f;
-	}
+		}
 
-	return acos(x);
-}
+		Vector2(Float x, Float y)
+		{
+			this->x = x;
+			this->y = y;
+		}
+
+		Vector2(const Vector2 &other)
+		{
+			x = other.x;
+			y = other.y;
+		}
+};
 
 /**********************************Vector3**************************/
 class Vector3
@@ -148,7 +163,7 @@ inline Vector3 operator*(Vector3 value, Float x)
 	return temp;
 }
 
-Float Distance(const Vector3 &a, const Vector3 &b)
+inline Float Distance(const Vector3 &a, const Vector3 &b)
 {
 	return (a - b).Length();
 }

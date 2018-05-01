@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
 	GLint projLoc = glGetUniformLocation(prog,"proj");
 	glUniformMatrix4fv(projLoc,1,GL_FALSE,projMat.Get());
 
-	Float color[3] = {1.0,1.0,1.0};
+	Float color[3] = {0.2,0.2,0.2};
 	GLint ambientLoc = glGetUniformLocation(prog,"ambient");
 	glUniform3fv(ambientLoc,1,color);
 
@@ -225,7 +225,7 @@ int main(int argc, char *argv[])
 	glUniform3fv(lgColorLoc,1,lightColor);
 
 	GLint lgDirLoc = glGetUniformLocation(prog,"lightPos");
-	glUniform3f(lgDirLoc,0,0.3,5);
+	glUniform3f(lgDirLoc,0,0.1,7);
 
 	GLint viewPosLoc= glGetUniformLocation(prog,"viewPos");
 	glUniform3f(viewPosLoc,0,0,2);
