@@ -96,6 +96,7 @@ void Display()
 		Init();
 	}
 
+	//指定绘制到创建的帧缓存中
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
 	glViewport(0,0,width,height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -105,6 +106,7 @@ void Display()
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES,0,3);
 
+	//指定缓存操作的源和目的
 	glBindFramebuffer(GL_READ_FRAMEBUFFER,fbo);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
 
