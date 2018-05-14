@@ -7,25 +7,31 @@ cxxflags = -I/home/xin/freeglut/include \
 	   -L/home/xin/assimp/lib \
 	-lGL -lGLU -lglut -lGLEW -lassimp
 
+objs = main.o mesh.o model.o texture.o
+ops = -g -std=c++11
+
 vpath %.h ../public
 vpath %.cpp ../public
 #VPATH=../pulbic/
 	   
-app.out:mesh.o model.o main.o
-	g++ -g -std=c++11 $(cxxflags) -o app.out mesh.o model.o main.o
+app.out:$(objs)
+	g++ $(ops) $(cxxflags) -o app.out $(objs)
 
 main.o:main.cpp
-	g++ -g -std=c++11 $(cxxflags) -c main.cpp
+	g++ $(ops) $(cxxflags) -c main.cpp
 
 mesh.o:mesh.cpp mesh.h
-	g++ -g -std=c++11 $(cxxflags)  -c $< 
+	g++ $(ops) $(cxxflags) -c $< 
 
 model.o:model.cpp model.h
-	g++ -g -std=c++11 $(cxxflags) -c $<
+	g++ $(ops) $(cxxflags) -c $<
+
+texture.o:texture.cpp texture.h
+	g++ $(ops) $(cxxflags) -c $<
 
 .PHONY:clean
 
 clean:
-	-rm main.o mesh.o model.o app.out
+	-rm $(objs) app.out
 
 

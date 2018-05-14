@@ -84,7 +84,7 @@ class Shader
 			GLint loc = glGetUniformLocation(m_program,name.c_str());
 			if(loc == -1)
 			{
-				Error("can't find %s in shader.\n",name.c_str());
+				Error("can't find %s in shader. program:%d\n",name.c_str(),m_program);
 				return;
 
 			}

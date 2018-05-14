@@ -7,43 +7,6 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture
 	this->indices = indices;
 	this->textures = textures;
 
-	/*this->vertices.clear();
-	this->indices.clear();
-	this->textures.clear();
-
-	Vertex v;
-	v.position = Vector3(0,0,0);
-	v.normal=Vector3(0,0,1);
-	this->vertices.push_back(v);
-	v.position = Vector3(1,0,0);
-	v.normal=Vector3(0,0,1);
-	this->vertices.push_back(v);
-	v.position = Vector3(1,1,0);
-	v.normal=Vector3(0,0,1);
-	this->vertices.push_back(v);
-	v.position = Vector3(0,1,0);
-	v.normal=Vector3(0,0,1);
-	this->vertices.push_back(v);
-	v.position = Vector3(0,2,0);
-	v.normal=Vector3(0,0,1);
-	this->vertices.push_back(v);
-
-	this->indices.push_back(0);
-	this->indices.push_back(1);
-	this->indices.push_back(2);
-	this->indices.push_back(2);
-	this->indices.push_back(3);
-	this->indices.push_back(0);
-	this->indices.push_back(2);
-	this->indices.push_back(3);
-	this->indices.push_back(4);
-
-	Texture texture;
-	GLuint tex;
-	glGenTextures(1,&tex);
-	texture.id = tex;
-	this->textures.push_back(texture);*/
-
 	SetupMesh();
 }
 

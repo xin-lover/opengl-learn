@@ -1,11 +1,13 @@
 #include "model.h"
-#include <iostream>
+#include <stdio.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "../public/stb_image.h"
+//#define STB_IMAGE_IMPLEMENTATION
+//#include "../public/stb_image.h"
+
+#include "../public/texture.h"
 
 
-unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
+//unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
 
 void Model::Draw(std::shared_ptr<Shader> shader)
 {
@@ -22,7 +24,7 @@ void Model::LoadModel(string path)
 
 	if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		std::cout<<"error:assimp:"<<import.GetErrorString()<<std::endl;
+		printf("error:assimp:%s\n",import.GetErrorString());
 		return;
 	}
 
@@ -118,7 +120,6 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 
 vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat,aiTextureType type, string typeName)
 {
-	std::cout<<"load Mat:"<<typeName<<std::endl;
 	vector<Texture> textures;
 	for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
@@ -139,7 +140,9 @@ vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat,aiTextureType type, 
 		{
 			//如果纹理还没有被加载，则加载它
 			Texture texture;
-			texture.id = TextureFromFile(str.C_Str(),directory);
+			string filename = string(str.C_Str());
+			filename = directory + '/' + filename;
+			texture.id = luwu::Texture2D::LoadTexture(filename.c_str());
 			texture.type = typeName;
 			texture.path = str.C_Str();
 			textures.push_back(texture);
@@ -147,11 +150,10 @@ vector<Texture> Model::LoadMaterialTextures(aiMaterial *mat,aiTextureType type, 
 		}
 
 	}
-	std::cout<<"texture size:"<<textures.size()<<std::endl;
 	return textures;
 }
 
-unsigned int TextureFromFile(const char* path, const string &directory, bool gamma)
+/*unsigned int TextureFromFile(const char* path, const string &directory, bool gamma)
 {
 	string filename = string(path);
 	filename = directory + '/' + filename;
@@ -168,7 +170,6 @@ unsigned int TextureFromFile(const char* path, const string &directory, bool gam
 		return 0;
 	}
 
-	std::cout<<"nchannels:"<<nrComponents<<std::endl;
 	GLenum format;
 	if(nrComponents ==  1)
 	{
@@ -198,4 +199,4 @@ unsigned int TextureFromFile(const char* path, const string &directory, bool gam
 
 	stbi_image_free(data);
 	return textureID;
-}
+}*/
