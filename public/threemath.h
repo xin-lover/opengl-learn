@@ -457,21 +457,21 @@ class Matrix4x4
 
 			Matrix4x4 m;
 			m.m_data[0] = ax * axis.x + c;
-			m.m_data[1] = ax * axis.y + axis.z * s;
-			m.m_data[2] = ax * axis.z - axis.y * s;
-			m.m_data[3] = 0;
-			m.m_data[4] = ay * axis.x  - axis.z * s;
-			m.m_data[5] = ay * axis.y  + c;
-			m.m_data[6] = ay * axis.z  + axis.x * s;
-			m.m_data[7] = 0;
-			m.m_data[8] = az * axis.x + axis.y * s;
-			m.m_data[9] = az * axis.y - axis.x * s;
-			m.m_data[10] = az * axis.z + c;
-			m.m_data[11] = 0;
-
+			m.m_data[4] = ax * axis.y + axis.z * s;
+			m.m_data[8] = ax * axis.z - axis.y * s;
 			m.m_data[12] = 0;
+			m.m_data[1] = ay * axis.x  - axis.z * s;
+			m.m_data[5] = ay * axis.y  + c;
+			m.m_data[9] = ay * axis.z  + axis.x * s;
 			m.m_data[13] = 0;
+			m.m_data[2] = az * axis.x + axis.y * s;
+			m.m_data[6] = az * axis.y - axis.x * s;
+			m.m_data[10] = az * axis.z + c;
 			m.m_data[14] = 0;
+
+			m.m_data[3] = 0;
+			m.m_data[7] = 0;
+			m.m_data[11] = 0;
 			m.m_data[15] = 1;
 
 			*this *= m;
@@ -513,6 +513,7 @@ class Matrix4x4
 		}
 
 		friend Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &b);
+		friend Vector3 operator*(const Matrix4x4 &a, const Vector3 &v);
 		friend Matrix4x4 Frustum(Float left,Float right,Float bottom, Float top, Float near, Float far);
 		friend Matrix4x4 Ortho(Float left, Float right,Float bottom, Float top, Float near, Float far);
 
@@ -520,29 +521,39 @@ class Matrix4x4
 		Float m_data[16];
 };
 
+//a * b transfrom is "b" transfrom first,not a
 inline Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &b)
 {
 	Matrix4x4 m;
-	m.m_data[0] = a.m_data[0] * b.m_data[0] + a.m_data[1] * b.m_data[4] + a.m_data[2] * b.m_data[8] + a.m_data[3] * b.m_data[12];
-	m.m_data[1] = a.m_data[0] * b.m_data[1] + a.m_data[1] * b.m_data[5] + a.m_data[2] * b.m_data[9] + a.m_data[3] * b.m_data[13];
-	m.m_data[2] = a.m_data[0] * b.m_data[2] + a.m_data[1] * b.m_data[6] + a.m_data[2] * b.m_data[10] + a.m_data[3] * b.m_data[14];
-	m.m_data[3] = a.m_data[0] * b.m_data[3] + a.m_data[1] * b.m_data[7] + a.m_data[2] * b.m_data[11] + a.m_data[3] * b.m_data[15];
-	m.m_data[4] = a.m_data[4] * b.m_data[0] + a.m_data[5] * b.m_data[4] + a.m_data[6] * b.m_data[8] + a.m_data[7] * b.m_data[12];
-	m.m_data[5] = a.m_data[4] * b.m_data[1] + a.m_data[5] * b.m_data[5] + a.m_data[6] * b.m_data[9] + a.m_data[7] * b.m_data[13];
-	m.m_data[6] = a.m_data[4] * b.m_data[2] + a.m_data[5] * b.m_data[6] + a.m_data[6] * b.m_data[10] + a.m_data[7] * b.m_data[14];
-	m.m_data[7] = a.m_data[4] * b.m_data[3] + a.m_data[5] * b.m_data[7] + a.m_data[6] * b.m_data[11] + a.m_data[7] * b.m_data[15];
-	m.m_data[8] = a.m_data[8] * b.m_data[0] + a.m_data[9] * b.m_data[4] + a.m_data[10] * b.m_data[8] + a.m_data[11] * b.m_data[12];
-	m.m_data[9] = a.m_data[8] * b.m_data[1] + a.m_data[9] * b.m_data[5] + a.m_data[10] * b.m_data[9] + a.m_data[11] * b.m_data[13];
-	m.m_data[10] = a.m_data[8] * b.m_data[2] + a.m_data[9] * b.m_data[6] + a.m_data[10] * b.m_data[10] + a.m_data[11] * b.m_data[14];
-	m.m_data[11] = a.m_data[8] * b.m_data[3] + a.m_data[9] * b.m_data[7] + a.m_data[10] * b.m_data[11] + a.m_data[11] * b.m_data[15];
-	m.m_data[12] = a.m_data[12] * b.m_data[0] + a.m_data[13] * b.m_data[4] + a.m_data[14] * b.m_data[8] + a.m_data[15] * b.m_data[12];
-	m.m_data[13] = a.m_data[12] * b.m_data[1] + a.m_data[13] * b.m_data[5] + a.m_data[14] * b.m_data[9] + a.m_data[15] * b.m_data[13];
-	m.m_data[14] = a.m_data[12] * b.m_data[2] + a.m_data[13] * b.m_data[6] + a.m_data[14] * b.m_data[10] + a.m_data[15] * b.m_data[14];
-	m.m_data[15] = a.m_data[12] * b.m_data[3] + a.m_data[13] * b.m_data[7] + a.m_data[14] * b.m_data[11] + a.m_data[15] * b.m_data[15];
+	m.m_data[0] = a.m_data[0] * b.m_data[0] + a.m_data[4] * b.m_data[1] + a.m_data[8] * b.m_data[2] + a.m_data[12] * b.m_data[3];
+	m.m_data[1] = a.m_data[1] * b.m_data[0] + a.m_data[5] * b.m_data[1] + a.m_data[9] * b.m_data[2] + a.m_data[13] * b.m_data[3];
+	m.m_data[2] = a.m_data[2] * b.m_data[0] + a.m_data[6] * b.m_data[1] + a.m_data[10] * b.m_data[2] + a.m_data[14] * b.m_data[3];
+	m.m_data[3] = a.m_data[3] * b.m_data[0] + a.m_data[7] * b.m_data[1] + a.m_data[11] * b.m_data[2] + a.m_data[15] * b.m_data[3];
+	m.m_data[4] = a.m_data[0] * b.m_data[4] + a.m_data[4] * b.m_data[5] + a.m_data[8] * b.m_data[6] + a.m_data[12] * b.m_data[7];
+	m.m_data[5] = a.m_data[1] * b.m_data[4] + a.m_data[5] * b.m_data[5] + a.m_data[9] * b.m_data[6] + a.m_data[13] * b.m_data[7];
+	m.m_data[6] = a.m_data[2] * b.m_data[4] + a.m_data[6] * b.m_data[5] + a.m_data[10] * b.m_data[6] + a.m_data[14] * b.m_data[7];
+	m.m_data[7] = a.m_data[3] * b.m_data[4] + a.m_data[7] * b.m_data[5] + a.m_data[11] * b.m_data[6] + a.m_data[15] * b.m_data[7];
+	m.m_data[8] = a.m_data[0] * b.m_data[8] + a.m_data[4] * b.m_data[9] + a.m_data[8] * b.m_data[10] + a.m_data[12] * b.m_data[11];
+	m.m_data[9] = a.m_data[1] * b.m_data[8] + a.m_data[5] * b.m_data[9] + a.m_data[9] * b.m_data[10] + a.m_data[13] * b.m_data[11];
+	m.m_data[10] = a.m_data[2] * b.m_data[8] + a.m_data[6] * b.m_data[9] + a.m_data[10] * b.m_data[10] + a.m_data[14] * b.m_data[11];
+	m.m_data[11] = a.m_data[3] * b.m_data[8] + a.m_data[7] * b.m_data[9] + a.m_data[11] * b.m_data[10] + a.m_data[15] * b.m_data[11];
+	m.m_data[12] = a.m_data[0] * b.m_data[12] + a.m_data[4] * b.m_data[13] + a.m_data[8] * b.m_data[14] + a.m_data[12] * b.m_data[15];
+	m.m_data[13] = a.m_data[1] * b.m_data[12] + a.m_data[5] * b.m_data[13] + a.m_data[9] * b.m_data[14] + a.m_data[13] * b.m_data[15];
+	m.m_data[14] = a.m_data[2] * b.m_data[12] + a.m_data[6] * b.m_data[13] + a.m_data[10] * b.m_data[14] + a.m_data[14] * b.m_data[15];
+	m.m_data[15] = a.m_data[3] * b.m_data[12] + a.m_data[7] * b.m_data[13] + a.m_data[11] * b.m_data[14] + a.m_data[15] * b.m_data[15];
 
 	return m;
 
 }		
+
+inline Vector3 operator*(const Matrix4x4 &a, const Vector3 &v)
+{
+	Vector3 tv;
+	tv.x = a.m_data[0] * v.x + a.m_data[4] * v.y + a.m_data[8] * v.z + a.m_data[12] * 1;
+	tv.y = a.m_data[1] * v.x + a.m_data[5] * v.y + a.m_data[9] * v.z + a.m_data[13] * 1;
+	tv.z = a.m_data[2] * v.x + a.m_data[6] * v.y + a.m_data[10] * v.z + a.m_data[14] * 1;
+	return tv;
+}
 
 inline Matrix4x4 Frustum(Float left,Float right,Float bottom, Float top, Float near, Float far)
 {

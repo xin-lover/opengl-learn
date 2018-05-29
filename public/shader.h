@@ -93,6 +93,32 @@ class Shader
 
 		}
 
+		void SetVec3(string name, float v1, float v2, float v3)
+		{
+			GLint loc = glGetUniformLocation(m_program,name.c_str());
+			if(loc == -1)
+			{
+				Error("can't find %s in shader. program:%d\n",name.c_str(),m_program);
+				return;
+
+			}
+
+			glUniform3f(loc,v1,v2,v3);
+		}
+
+		void SetVec2(string name, float v1, float v2)
+		{
+			GLint loc = glGetUniformLocation(m_program,name.c_str());
+			if(loc == -1)
+			{
+				Error("can't find %s in shader. program:%d\n",name.c_str(),m_program);
+				return;
+
+			}
+
+			glUniform2f(loc,v1,v2);
+		}
+
 	private:
 		GLuint m_program;
 		GLuint m_vShader;
