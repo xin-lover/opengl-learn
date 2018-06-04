@@ -14,7 +14,13 @@ class Texture2D
 		Texture2D(const char *path);
 		//Texture2D(const Texture2D &other) = delete;
 		//void operator=(const Texture2D &other) = delete;
-		~Texture2D();
+		~Texture2D()
+		{
+			if(tex_ > 0)
+			{
+				glDeleteTextures(1,&tex_);
+			}
+		}
 
 		GLuint Get()
 		{

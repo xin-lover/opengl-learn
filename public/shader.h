@@ -40,10 +40,32 @@ class Shader
 			}
 		}
 
+		Shader(string vertexShaderPath, string fragmentShaderPath, string geometryShaderPath)
+		{
+			m_vShader = CreateShader(GL_VERTEX_SHADER,vertexShaderPath);
+			m_fShader = CreateShader(GL_FRAGMENT_SHADER,fragmentShaderPath);
+			m_gShader = CreateShader(GL_GEOMETRY_SHADER,geometryShaderPath);
+			m_program = glCreateProgram();
+			glAttachShader(m_program,m_vShader);
+			glAttachShader(m_program,m_fShader);
+			glAttachShader(m_program,m_gShader);
+			glLinkProgram(m_program);
+			int success;
+			glGetProgramiv(m_program,GL_LINK_STATUS,&success);
+			if(!success)
+			{
+				char buf[256];
+				glGetProgramInfoLog(m_program,256,NULL,buf);
+				Error("link program error..\n %s",buf);
+			}
+
+		}
+
 		~Shader()
 		{
 			glDeleteShader(m_vShader);
 			glDeleteShader(m_fShader);
+			glDeleteShader(m_gShader);
 			glDeleteProgram(m_program);
 		}
 
@@ -93,6 +115,20 @@ class Shader
 
 		}
 
+		void SetMatrix(string name, int count,float* data)
+		{
+			GLint loc = glGetUniformLocation(m_program,name.c_str());
+			if(loc == -1)
+			{
+				Error("can't find %s in shader. program:%d\n",name.c_str(),m_program);
+				return;
+
+			}
+
+			glUniformMatrix4fv(loc,count,GL_FALSE,data);
+
+		}
+
 		void SetVec3(string name, float v1, float v2, float v3)
 		{
 			GLint loc = glGetUniformLocation(m_program,name.c_str());
@@ -123,6 +159,7 @@ class Shader
 		GLuint m_program;
 		GLuint m_vShader;
 		GLuint m_fShader;
+		GLuint m_gShader;
 
 		char* readShader(const char* file)
 		{
@@ -161,7 +198,7 @@ class Shader
 			Error("file:%s\n",path.c_str());
 			char* filebuf = readShader(path.c_str());
 
-			Error("%s\n",filebuf);
+			//Error("%s\n",filebuf);
 			glShaderSource(shader,1,(const GLchar**)&filebuf,NULL);
 			glCompileShader(shader);
 
