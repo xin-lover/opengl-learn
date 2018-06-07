@@ -155,6 +155,11 @@ class Shader
 			glUniform2f(loc,v1,v2);
 		}
 
+		int GetAttribLocation(string name)
+		{
+			return glGetAttribLocation(m_program,name.c_str());
+		}
+
 	private:
 		GLuint m_program;
 		GLuint m_vShader;
