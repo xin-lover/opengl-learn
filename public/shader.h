@@ -200,8 +200,12 @@ class Shader
 				Error("create shader %d fail.\n",type);
 			}
 
-			Error("file:%s\n",path.c_str());
+			Error("Compile Shader file:%s\n",path.c_str());
 			char* filebuf = readShader(path.c_str());
+			if(filebuf == NULL)
+			{
+				return 0;
+			}
 
 			//Error("%s\n",filebuf);
 			glShaderSource(shader,1,(const GLchar**)&filebuf,NULL);
