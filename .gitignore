@@ -12,3 +12,6 @@ test
 
 #.s
 *.s
+
+#.out
+*.out

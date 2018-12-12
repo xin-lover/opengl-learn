@@ -1,11 +1,12 @@
 #ifndef __SHADER_HEAD__
 #define __SHADER_HEAD__
 
-#include <GL/glew.h>
+//#include <GL/glew.h>
+#include <glad/glad.h>
 #include <string.h>
 #include <string>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 
 #include "logger.h"
 
@@ -33,7 +34,7 @@ class Shader
 			glLinkProgram(m_program);
 			int success;
 			glGetProgramiv(m_program,GL_LINK_STATUS,&success);
-			m_programValid = sucess;
+			m_programValid = success;
 			if(!success)
 			{
 				char buf[256];
@@ -54,12 +55,12 @@ class Shader
 			glLinkProgram(m_program);
 			int success;
 			glGetProgramiv(m_program,GL_LINK_STATUS,&success);
-			m_programValid=sucess;
+			m_programValid=success;
 			if(!success)
 			{
 				char buf[256];
 				glGetProgramInfoLog(m_program,256,NULL,buf);
-				Logger::Log("link program error..\n %s",buf);
+				Logger::Error("link program error..\n %s",buf);
 			}
 
 		}
@@ -77,7 +78,7 @@ class Shader
 
 		void Use()
 		{
-				glUseProgram(m_program);
+			glUseProgram(m_program);
 		}
 
 		void SetInt(string name, int value)
@@ -171,7 +172,7 @@ class Shader
 
 		bool m_programValid;
 
-		char* readShader(const char* file)
+		static char* readShader(const char* file)
 		{
 			FILE *fp = fopen(file,"rb");
 			if(fp == NULL)
@@ -182,25 +183,25 @@ class Shader
 
 			if(fseek(fp,0,SEEK_END) == 0)
 			{
-					int len = ftell(fp);
+				int len = ftell(fp);
 
-					char *content = (char*) malloc ((len + 1) * sizeof(char));
-					if(content == NULL)
-					{
-							Logger::Log("malloc fail...\n");
-							exit(1);
-					}
-					memset(content,0,len+1);
+				char *content = (char*) malloc ((len + 1) * sizeof(char));
+				if(content == NULL)
+				{
+					Logger::Fatal("malloc fail...\n");
+					exit(1);
+				}
+				memset(content,0,len+1);
 
-					fseek(fp,0,SEEK_SET);
-					fread(content,1,len, fp);
-					fclose(fp);
-					return content;
+				fseek(fp,0,SEEK_SET);
+				fread(content,1,len, fp);
+				fclose(fp);
+				return content;
 			}
 			else
 			{
-					Logger::Log("fseek error..\n");
-					return NULL;
+				Logger::Error("fseek error..\n");
+				return NULL;
 			}
 		}
 
@@ -209,13 +210,14 @@ class Shader
 			GLuint shader = glCreateShader(type);
 			if(shader == 0)
 			{
-				Logger::Log("create shader %d fail.\n",type);
+				Logger::Error("create shader %d fail.\n",type);
 			}
 
-			//Logger::Log("Compile Shader file:%s\n",path.c_str());
+			Logger::Log("Compile Shader file:%s\n",path.c_str());
 			char* filebuf = readShader(path.c_str());
 			if(filebuf == NULL)
 			{
+				Logger::Error("read shader file %s fail..\n",path.c_str());
 				return 0;
 			}
 
@@ -226,10 +228,9 @@ class Shader
 			glGetShaderiv(shader,GL_COMPILE_STATUS,&success);
 			if(!success)
 			{
-				Logger::Log("compile shader fail.\n");
 				char info[256];
 				glGetShaderInfoLog(shader,256,NULL,info);
-				Logger::Log("%s\n",info);
+				Logger::Error("compile shader fail. %s\n",info);
 			}
 
 			free(filebuf);

@@ -1,4 +1,9 @@
+#if __linux__
 #include <GL/glut.h>
+#elif __APPLE__
+#include <GLUT/glut.h>
+#endif
+
 #include <stdlib.h>
 void init();
 void display();
