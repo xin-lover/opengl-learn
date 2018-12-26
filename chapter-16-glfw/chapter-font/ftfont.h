@@ -1,16 +1,20 @@
 #ifndef __FTFONT_HEAD__
 #define __FTFONT_HEAD__
+#include <math.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
 namespace luwu
 {
 
-struct Bitmap
+struct GlyphRec
 {
 	unsigned char* data;
 	int width;
 	int height;
+	int bearingx;
+	int bearingy;
+	unsigned int advance;
 };
 
 class FTFont
@@ -43,13 +47,25 @@ class FTFont
 			
 		}
 
-		Bitmap Load(FT_ULong charcode)
+		GlyphRec Load(FT_ULong charcode)
 		{
 			FT_Error error = FT_Set_Char_Size(m_face,0,16 * 64,300,300);
 			if(error)
 			{
 				printf("set char size error...\n");
 			}
+
+			FT_Vector pen;
+			pen.x = -16 * 300 * 64;
+			pen.y = -64 * 300 * 64;
+			FT_Matrix matrix;
+			double angle = ( -25.0 / 360 ) * 3.14159 * 2;
+			matrix.xx = (FT_Fixed)(cos(angle) * 0x10000L);
+			matrix.xy = (FT_Fixed)(-sin(angle) * 0x10000L);
+			matrix.yx = (FT_Fixed)(sin(angle) * 0x10000L);
+			matrix.yy = (FT_Fixed)(cos(angle) * 0x10000L);
+
+			// FT_Set_Transform(m_face,nullptr,nullptr);
 
 			FT_UInt glyph_index = FT_Get_Char_Index(m_face,charcode);
 			error = FT_Load_Glyph(m_face,glyph_index,FT_LOAD_DEFAULT);
@@ -67,10 +83,13 @@ class FTFont
 			FT_GlyphSlot slot = m_face->glyph;
 			FT_Bitmap bm = slot->bitmap;
 
-			Bitmap bit;
+			GlyphRec bit;
 			bit.data = bm.buffer;
 			bit.width = bm.width;
 			bit.height = bm.rows;
+			bit.bearingx = slot->bitmap_left;
+			bit.bearingy = slot->bitmap_top;
+			bit.advance = slot->advance.x;
 			return bit;
 		}
 

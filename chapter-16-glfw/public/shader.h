@@ -133,6 +133,19 @@ class Shader
 
 		}
 
+		void SetVec4(string name, float v1, float v2, float v3, float v4)
+		{
+			GLint loc = glGetUniformLocation(m_program,name.c_str());
+			if(loc == -1)
+			{
+				Logger::Log("can't find %s in shader. program:%d\n",name.c_str(),m_program);
+				return;
+
+			}
+
+			glUniform4f(loc,v1,v2,v3,v4);
+		}
+
 		void SetVec3(string name, float v1, float v2, float v3)
 		{
 			GLint loc = glGetUniformLocation(m_program,name.c_str());
