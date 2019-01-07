@@ -1,7 +1,8 @@
 #include "threemath.h"
 
 
-Float SafeAcos(Float x)
+template<typename T>
+T SafeAcos(T x)
 {
 	if(x <= -1.0f)
 	{
