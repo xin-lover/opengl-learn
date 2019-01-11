@@ -18,7 +18,7 @@ class Texture2D
 		{
 			if(tex_ > 0)
 			{
-				printf("delete texture");
+				printf("delete texture %u\n",tex_);
 				glDeleteTextures(1,&tex_);
 			}
 		}

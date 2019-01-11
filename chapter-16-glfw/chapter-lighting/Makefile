@@ -28,4 +28,4 @@ main.o:main.cpp
 
 .PHONY:clean
 clean:
-		rm a.out $(obj)
+		-rm a.out $(obj)

@@ -63,6 +63,14 @@ class Vector3_
 		{
 		}
 
+		Vector3_(T val):
+			x(val),
+			y(val),
+			z(val)
+		{
+			
+		}
+
 		Vector3_(T nx,T ny,T nz):
 			x(nx),
 			y(ny),
@@ -140,11 +148,6 @@ class Vector3_
 		{
 			return x!=other.x || y != other.y || z!=other.z;
 		}
-
-		friend Vector3_ operator+(Vector3_ lvalue,Vector3_ rvalue);
-		friend Vector3_ operator-(Vector3_ lvalue, Vector3_ rvalue);
-		friend Vector3_ operator*(Vector3_ value, T x);
-
 };
 
 template<typename T>
@@ -167,6 +170,18 @@ inline Vector3_<T> operator*(Vector3_<T> value, T x)
 {
 	Vector3_<T> temp(value.x * x, value.y * x, value.z * x);
 	return temp;
+}
+
+// template<typename T>
+// inline Vector3_<T> operator*(Vector3_<T> lvalue,Vector3_<T> rvalue)
+// {
+// 	return Vector3_<T>(lvalue.x * rvalue.x, lvalue.y * rvalue.y, lvalue.z * rvalue.z);
+// }
+
+template<typename T>
+inline Vector3_<T> operator*(const Vector3_<T> &lvalue,const Vector3_<T> &rvalue)
+{
+	return Vector3_<T>(lvalue.x * rvalue.x, lvalue.y * rvalue.y, lvalue.z * rvalue.z);
 }
 
 template<typename T>
@@ -462,7 +477,7 @@ class Matrix4x4_
 			return m;
 		}
 
-		//使用右手法则
+		//使用左手法则
 		void Rotate(const Vector3_<T> &axis,T theta)
 		{
 			T c = cos(RADIAN(theta));
