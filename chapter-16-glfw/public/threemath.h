@@ -523,6 +523,13 @@ class Matrix4x4_
 			m_data[14] += t.z;
 		}
 
+		void Translate(T x,T y,T z)
+		{
+			m_data[12] += x, 
+			m_data[13] += y;
+			m_data[14] += z;
+		}
+
 
 		T* Get()
 		{

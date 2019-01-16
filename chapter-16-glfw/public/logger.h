@@ -1,4 +1,7 @@
 
+#ifndef __LOGGER_HEADER__
+#define __LOGGER_HEADER__
+
 #include <string>
 #include <cstdio>
 #include <stdarg.h>
@@ -56,3 +59,5 @@ namespace luwu
 
 	};
 }
+
+#endif

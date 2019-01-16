@@ -1,6 +1,8 @@
 #include "mesh.h"
 #include <stddef.h>
 
+using namespace luwu;
+
 Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures)
 {
 	this->vertices = vertices;
