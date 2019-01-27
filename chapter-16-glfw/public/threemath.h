@@ -107,6 +107,7 @@ class Vector3_
 
 		void Normalized()
 		{
+			Vector3_<T> tmp;
 			T len = Length();
 			if(len > 0)
 			{
@@ -147,6 +148,22 @@ class Vector3_
 		bool operator !=(const Vector3_ &other) const
 		{
 			return x!=other.x || y != other.y || z!=other.z;
+		}
+
+		Vector3_ operator +=(const Vector3_ &other)
+		{
+			this->x += other.x;
+			this->y += other.y;
+			this->z += other.z;
+			return *this;
+		}
+
+		Vector3_ operator -=(const Vector3_ &other)
+		{
+			this->x -= other.x;
+			this->y -= other.y;
+			this->z -= other.z;
+			return *this;
 		}
 };
 
@@ -423,15 +440,32 @@ inline Vector3_<T> operator*(Vector3_<T> v,Quaternion_<T> a)
 }
 		       	
 /*********************************Matrix3x3*****************************/
+
+template<typename T>
+class Matrix4x4_;
+
 template<typename T>
 class Matrix3x3_
 {
+	using length_t = int;
 	public:
 		Matrix3x3_()
 		{
 			memset(m_data,0,9);
 		}
 
+		Matrix3x3_(const Matrix4x4_<T>& mat4)
+		{
+			m_data[0] = mat4[0];
+			m_data[1] = mat4[1];
+			m_data[2] = mat4[2];
+			m_data[3] = mat4[4];
+			m_data[4] = mat4[5];
+			m_data[5] = mat4[6];
+			m_data[6] = mat4[8];
+			m_data[7] = mat4[9];
+			m_data[8] = mat4[10];
+		}
 
 		inline Matrix3x3_ Identity()
 		{
@@ -444,6 +478,16 @@ class Matrix3x3_
 		T* Get()
 		{
 			return m_data;
+		}
+
+		T& operator[](length_t index)
+		{
+			return m_data[index];
+		}
+
+		const T& operator[](length_t index) const
+		{
+			return m_data[index];
 		}
 
 	private:
@@ -464,6 +508,27 @@ class Matrix4x4_
 			{
 				m_data[i] = 0;
 			}
+		}
+
+		Matrix4x4_(const Matrix3x3_<T>& mat3)
+		{
+			m_data[0] = mat3[0];
+			m_data[4] = mat3[3];
+			m_data[8] = mat3[6];
+			m_data[1] = mat3[1];
+			m_data[5] = mat3[4];
+			m_data[9] = mat3[7];
+			m_data[2] = mat3[2];
+			m_data[6] = mat3[5];
+			m_data[10] = mat3[8];
+
+			m_data[3] = 0;
+			m_data[7] = 0;
+			m_data[11] = 0;
+			m_data[12] = 0;
+			m_data[13] = 0;
+			m_data[14] = 0;
+			m_data[15] = 0;
 		}
 
 		~Matrix4x4_()
@@ -603,6 +668,7 @@ inline Vector3_<T> operator*(const Matrix4x4_<T> &a, const Vector3_<T> &v)
 	return tv;
 }
 
+//左手坐标系
 template<typename T>
 inline Matrix4x4_<T> Frustum(T left,T right,T bottom, T top, T near, T far)
 {
@@ -644,10 +710,41 @@ inline Matrix4x4_<T> Ortho(T left,T right, T bottom, T top, T near, T far)
 	return m;
 }
 
+template<typename T>
+inline Matrix4x4_<T> LookAt(Vector3_<T> position,Vector3_<T> target,Vector3_<T> up)
+{
+	Vector3_<T> front = target - position;
+	front.Normalized();
+	Vector3_<T> right = Vector3_<T>::Cross(front,up);
+	right.Normalized();
+	up = Vector3_<T>::Cross(right,front);
+	up.Normalized();
+
+	Matrix4x4_<T> mat = Matrix4x4_<T>::Identity();
+	mat[0] = right.x;
+	mat[4] = right.y;
+	mat[8] = right.z;
+
+	mat[1] = up.x;
+	mat[5] = up.y;
+	mat[9] = up.z;
+
+	mat[2] = -front.x;
+	mat[6] = -front.y;
+	mat[10] = -front.z;
+
+	mat[12] = -Vector3_<T>::Dot(position,right);
+	mat[13] = -Vector3_<T>::Dot(position,up);
+	mat[14] = Vector3_<T>::Dot(position,front);
+
+	return mat;
+}
+
 
 using Vector2 = Vector2_<float>;
 using Vector3 = Vector3_<float>;
 using Matrix4x4 = Matrix4x4_<float>;
+using Matrix3x3 = Matrix3x3_<float>;
 
 #endif
 

@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../public/stb_image.h"
+#include "stb_image.h"
 
 using namespace luwu;
 

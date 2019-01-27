@@ -3,7 +3,10 @@
 
 #include <glad/glad.h>
 #include <memory>
-#include <stdio.h>
+#include <vector>
+#include "logger.h"
+#include <string>
+
 
 namespace luwu
 {
@@ -30,6 +33,7 @@ class Texture2D
 			
 		static GLuint LoadTexture(const char *path,bool flip = true);
 		static std::shared_ptr<Texture2D> LoadTexture(const unsigned char *buffer,int width,int height, GLenum format);
+		static GLuint LoadCubmap(const std::vector<std::string>& faces);
 
 	private:
 		Texture2D(GLuint tex):tex_(tex){}
