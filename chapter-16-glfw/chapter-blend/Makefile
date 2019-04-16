@@ -15,7 +15,7 @@ texture.o:texture.cpp
 	g++ $(cxxflags) -I../glad/include -c $<
 
 glad.o:glad.c
-	g++ $(dxxflags) -I../glad/include -c $<
+	g++ $(cxxflags) -I../glad/include -c $<
 
 PHONY:clean
 clean:

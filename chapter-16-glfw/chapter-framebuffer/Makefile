@@ -19,6 +19,6 @@ glad.o:glad.c
 texture.o:texture.cpp
 	g++ $(cxxflags) -I../glad/include -c $<
 
-PHONY:clean
+.PHONY:clean
 clean:
 	-rm a.out $(obj)

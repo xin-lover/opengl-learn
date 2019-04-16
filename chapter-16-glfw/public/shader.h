@@ -81,6 +81,11 @@ class Shader
 			glUseProgram(m_program);
 		}
 
+		GLuint Get()
+		{
+			return m_program;
+		}
+
 		void SetInt(string name, int value)
 		{
 			GLint loc = glGetUniformLocation(m_program,name.c_str());

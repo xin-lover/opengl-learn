@@ -46,6 +46,20 @@ class Vector2_
 		}
 };
 
+template<typename T>
+Vector2_<T> operator +(Vector2_<T> lval,Vector2_<T> rval)
+{
+	Vector2_<T> tmp(lval.x+rval.x,lval.y+rval.y);
+	return tmp;
+}
+
+template<typename T>
+Vector2_<T> operator -(Vector2_<T> lval,Vector2_<T> rval)
+{
+	Vector2_<T> tmp(lval.x-rval.x,lval.y-rval.y);
+	return tmp;
+}
+
 /**********************************Vector3**************************/
 template<typename T>
 class Vector3_
