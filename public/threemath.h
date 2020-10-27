@@ -406,12 +406,13 @@ class Matrix3x3
 		}
 
 
-		inline Matrix3x3 Identity()
+		inline static Matrix3x3 Identity()
 		{
-			memset(m_data,0,9);
-			m_data[0] = 1;
-			m_data[4] = 1;
-			m_data[8] = 1;
+			Matrix3x3 m;
+			m.m_data[0] = 1;
+			m.m_data[4] = 1;
+			m.m_data[8] = 1;
+			return m;
 		}
 
 		Float* Get()

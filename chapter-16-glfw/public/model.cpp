@@ -1,10 +1,10 @@
-#include "model.h"
 #include <stdio.h>
+#include "model.h"
 
 //#define STB_IMAGE_IMPLEMENTATION
 //#include "../public/stb_image.h"
 
-#include "../public/texture.h"
+#include "texture.h"
 
 
 //unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);

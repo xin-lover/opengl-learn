@@ -1,0 +1,12 @@
+Compile Shader file:./pbr1.2.vert
+Compile Shader file:./pbr1.2.frag
+nComponents:4
+nComponents:3
+nComponents:1
+nComponents:1
+nComponents:3
+delete texture 5
+delete texture 4
+delete texture 3
+delete texture 2
+delete texture 1

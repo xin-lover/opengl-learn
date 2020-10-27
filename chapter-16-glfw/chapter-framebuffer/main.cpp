@@ -194,7 +194,7 @@ int main()
     GLuint rbo;
     glGenRenderbuffers(1,&rbo);
     glBindRenderbuffer(GL_RENDERBUFFER,rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER,GL_RGBA,k_width,k_height);
+    glRenderbufferStorage(GL_RENDERBUFFER,GL_RGB,k_width/2,k_height/2);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_RENDERBUFFER,rbo);
 
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -220,7 +220,7 @@ int main()
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER,fbo);    
-    glViewport(0,0,k_width,k_height);
+        glViewport(0,0,k_width,k_height);
         glClearColor(0.2,0.3,0.3,1.0);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -232,6 +232,8 @@ int main()
         glBindFramebuffer(GL_READ_FRAMEBUFFER,fbo);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER,0);
 
+        glViewport(0,0,k_width,k_height);
+        glClearColor(0.0,0.0,0.0,1.0);
         glClear(GL_COLOR_BUFFER_BIT);
         glBlitFramebuffer(0,0,k_width,k_height,0,0,k_width,k_height,GL_COLOR_BUFFER_BIT,GL_NEAREST);
         // glBlitFramebuffer(0,0,k_width,k_height,0,0,k_width/2,k_height/2,GL_COLOR_BUFFER_BIT,GL_NEAREST);

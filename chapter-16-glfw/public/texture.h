@@ -33,6 +33,7 @@ class Texture2D
 			
 		static GLuint LoadTexture(const char *path,bool flip = true);
 		static std::shared_ptr<Texture2D> LoadTexture(const unsigned char *buffer,int width,int height, GLenum format);
+		static std::shared_ptr<Texture2D> LoadTexture(const unsigned char *data,int width,int height,GLenum innerFormat, GLenum outerFormat);
 		static GLuint LoadCubmap(const std::vector<std::string>& faces);
 
 	private:

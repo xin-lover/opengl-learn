@@ -121,7 +121,6 @@ class Vector3_
 
 		void Normalized()
 		{
-			Vector3_<T> tmp;
 			T len = Length();
 			if(len > 0)
 			{
@@ -178,6 +177,20 @@ class Vector3_
 			this->y -= other.y;
 			this->z -= other.z;
 			return *this;
+		}
+
+		Vector3_ operator *=(T s)
+		{
+			this->x*=s;
+			this->y*=s;
+			this->z*=s;
+		}
+
+		Vector3_ operator /=(T s)
+		{
+			this->x/=s;
+			this->y/=s;
+			this->z/=s;
 		}
 };
 
@@ -559,25 +572,27 @@ class Matrix4x4_
 		//使用左手法则
 		void Rotate(const Vector3_<T> &axis,T theta)
 		{
+			Vector3_<T> v = axis;
+			v.Normalized();
 			T c = cos(RADIAN(theta));
 			T s = sin(RADIAN(theta));
 			T a = 1.0f - c;
-			T ax = a * axis.x;
-			T ay = a * axis.y;
-			T az = a * axis.z;
+			T ax = a * v.x;
+			T ay = a * v.y;
+			T az = a * v.z;
 
 			Matrix4x4_ m;
-			m.m_data[0] = ax * axis.x + c;
-			m.m_data[4] = ax * axis.y + axis.z * s;
-			m.m_data[8] = ax * axis.z - axis.y * s;
+			m.m_data[0] = ax * v.x + c;
+			m.m_data[4] = ax * v.y + v.z * s;
+			m.m_data[8] = ax * v.z - v.y * s;
 			m.m_data[12] = 0;
-			m.m_data[1] = ay * axis.x  - axis.z * s;
-			m.m_data[5] = ay * axis.y  + c;
-			m.m_data[9] = ay * axis.z  + axis.x * s;
+			m.m_data[1] = ay * v.x  - v.z * s;
+			m.m_data[5] = ay * v.y  + c;
+			m.m_data[9] = ay * v.z  + v.x * s;
 			m.m_data[13] = 0;
-			m.m_data[2] = az * axis.x + axis.y * s;
-			m.m_data[6] = az * axis.y - axis.x * s;
-			m.m_data[10] = az * axis.z + c;
+			m.m_data[2] = az * v.x + v.y * s;
+			m.m_data[6] = az * v.y - v.x * s;
+			m.m_data[10] = az * v.z + c;
 			m.m_data[14] = 0;
 
 			m.m_data[3] = 0;
@@ -590,9 +605,27 @@ class Matrix4x4_
 
 		void Scale(T s)
 		{
-			m_data[0] *=s;
-			m_data[5] *=s;
-			m_data[10] *= s;		
+			Scale(s,s,s);
+		}
+
+		void Scale(T scale_x,T scale_y, T scale_z)
+		{
+			// m_data[0] *=scale_x;
+			// m_data[5] *=scale_y;
+			// m_data[10] *= scale_z;
+
+
+			m_data[0] *=scale_x;
+			m_data[4] *=scale_x;
+			m_data[8] *=scale_x;
+
+			m_data[1] *=scale_y;
+			m_data[5] *=scale_y;
+			m_data[9] *=scale_y;
+
+			m_data[2] *= scale_z;		
+			m_data[6] *= scale_z;		
+			m_data[10] *= scale_z;		
 		}
 
 		void Translate(const Vector3_<T> &t)

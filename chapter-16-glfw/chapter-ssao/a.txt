@@ -1,0 +1,23 @@
+Compile Shader file:./ssao_geometry.vert
+Compile Shader file:./ssao_geometry.frag
+Compile Shader file:./fbo_debug.vert
+Compile Shader file:./fbo_debug.frag
+Compile Shader file:./ssao.vert
+Compile Shader file:./ssao.frag
+Compile Shader file:./ssao.vert
+Compile Shader file:./ssao_lighting.frag
+nComponents:3
+nComponents:4
+nComponents:4
+nComponents:4
+nComponents:4
+nComponents:4
+nComponents:4
+nComponents:4
+nComponents:4
+nComponents:4
+nComponents:4
+nComponents:4
+nComponents:4
+delete texture 3
+delete texture 2

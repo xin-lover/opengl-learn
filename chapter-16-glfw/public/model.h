@@ -3,13 +3,15 @@
 #include <memory>
 #include "shader.h"
 #include "mesh.h"
-#include <GL/gl.h>
+#include <glad/glad.h>
 
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 
 #include <stdio.h>
+
+using namespace luwu;
 
 
 class Model

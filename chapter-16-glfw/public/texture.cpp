@@ -74,6 +74,21 @@ std::shared_ptr<Texture2D> Texture2D::LoadTexture(const unsigned char *data,int 
 	return std::shared_ptr<Texture2D>(new Texture2D(textureID));
 }
 
+std::shared_ptr<Texture2D> Texture2D::LoadTexture(const unsigned char *data,int width,int height,GLenum innerFormat, GLenum outerFormat)
+{
+	unsigned int textureID;
+	glGenTextures(1,&textureID);
+
+	glBindTexture(GL_TEXTURE_2D,textureID);
+	glTexImage2D(GL_TEXTURE_2D,0,innerFormat,width,height,0,outerFormat,GL_UNSIGNED_BYTE,data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+	return std::shared_ptr<Texture2D>(new Texture2D(textureID));
+}
+
 GLuint Texture2D::LoadCubmap(const std::vector<std::string> &faces)
 {
 	GLuint sktex;

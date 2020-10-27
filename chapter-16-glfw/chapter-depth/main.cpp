@@ -172,11 +172,11 @@ int main()
     sh->SetMatrix("view",view.Get());
     sh->SetMatrix("projection",projection.Get());
 
-    shared_ptr<Texture2D> tex = make_shared<Texture2D>("./marble.jpg");
-    shared_ptr<Texture2D> tex2 = make_shared<Texture2D>("./metal.png");
+    shared_ptr<Texture2D> tex = make_shared<Texture2D>("../resources/marble.jpg");
+    shared_ptr<Texture2D> tex2 = make_shared<Texture2D>("../resources/metal.png");
 
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    // glDepthFunc(GL_LESS);
 
     while(!glfwWindowShouldClose(window))
     {
